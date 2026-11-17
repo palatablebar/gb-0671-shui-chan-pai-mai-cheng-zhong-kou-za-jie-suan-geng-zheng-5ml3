@@ -1,0 +1,22 @@
+:root {
+ --bg: #14171a;
+ --rail: #0d1012;
+ --panel: #1c2126;
+ --surface: #1c2126;
+ --panel-2: #252c33;
+ --ink: #e2e8ea;
+ --ink-muted: #8ea0aa;
+ --line: #333d45;
+ --accent: #39c2b0;
+ --accent-ink: #042622;
+ --ok: #54bb8b;
+ --warn: #e5b65b;
+ --bad: #ed7c80;
+ --info: #7fb8dd;
+ --font-ui: -apple-system, "PingFang SC", sans-serif;
+ --font-num: "SFMono-Regular", Consolas, monospace;
+ --radius: 2px;
+ --row: 27px;
+ --pad: 11px;
+ --gap: 11px;
+}

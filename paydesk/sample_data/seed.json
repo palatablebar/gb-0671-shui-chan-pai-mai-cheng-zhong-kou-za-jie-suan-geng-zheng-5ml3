@@ -1,0 +1,26 @@
+{
+  "docket_no": "D20261117",
+  "settle_date": "2026-11-17",
+  "bills": [
+    {"bill_no": "P0001", "vendor": "宏远渔业", "due_amount": "12000.00"},
+    {"bill_no": "P0002", "vendor": "蓝海冷链", "due_amount": "8600.50"},
+    {"bill_no": "P0003", "vendor": "东港包装", "due_amount": "5320.75"},
+    {"bill_no": "P0004", "vendor": "瑞祥运输", "due_amount": "1980.00"},
+    {"bill_no": "P0005", "vendor": "恒信饲料", "due_amount": "24500.00"},
+    {"bill_no": "P0006", "vendor": "金鳞水产", "due_amount": "7750.25"},
+    {"bill_no": "P0007", "vendor": "顺达物流", "due_amount": "3360.00"},
+    {"bill_no": "P0008", "vendor": "裕丰冰块", "due_amount": "980.50"}
+  ],
+  "seed_commands": {
+    "issued_batch": "B20261117-01",
+    "issued_bills": ["P0001", "P0002", "P0003", "P0004"],
+    "return_report": {
+      "report_no": "RBK-20261118-007",
+      "batch_no": "B20261117-01",
+      "bill_no": "P0002",
+      "bank_date": "2026-11-18",
+      "reason": "ACCOUNT_MISMATCH"
+    },
+    "unbatched_bills": ["P0005", "P0006", "P0007", "P0008"]
+  }
+}

@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block kpis %}{{ kpi_bar(view.metrics) }}{% endblock %}
+{% block content %}
+<section class="panel">
+  <div class="panel__head"><h2>{{ view.title }}</h2><span>{{ view.rows|length }} 条回报</span></div>
+  {% if view.rows %}
+  <div class="scroll"><table class="ledger">
+    <thead><tr><th>银行回报号</th><th>批次号</th><th>票据号</th><th class="num">退回金额</th><th>银行回报日</th><th>原因码</th><th>续结批次</th></tr></thead>
+    <tbody>
+    {% for r in view.rows %}
+      <tr>
+        <td class="num">{{ r.report_no }}</td>
+        <td class="num">{{ r.batch_no }}</td>
+        <td class="num">{{ r.bill_no }}</td>
+        <td class="num">{{ r.amount }}</td>
+        <td class="num">{{ r.bank_date }}</td>
+        <td><span class="tag warn">{{ r.reason }}</span></td>
+        <td class="num">{{ r.recovered_by or '未续结' }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table></div>
+  {% else %}<p class="empty">暂无退回回报。</p>{% endif %}
+  <div class="panel__bar"><span class="hint">同一回报号重复提交只返回既有记录（idempotent=true），绝不重复生成付款。</span></div>
+</section>
+{% endblock %}

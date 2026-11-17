@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block kpis %}{{ kpi_bar(view.totals) }}{% endblock %}
+{% block content %}
+<section class="panel">
+  <div class="panel__head"><h2>{{ view.title }}</h2>
+    <span class="tag {{ 'tag-已付清' if view.balanced and view.pay_identity_ok else 'tag-部分退回' }}">
+      {{ '对账一致 · 可归档' if view.balanced and view.pay_identity_ok else '存在阻断 · 禁止归档' }}
+    </span>
+  </div>
+  <div class="scroll"><table class="ledger">
+    <thead><tr><th>对账项</th><th>结果</th><th class="num">期望</th><th class="num">实际</th></tr></thead>
+    <tbody>
+    {% for c in view.checks %}
+      <tr><td class="num">{{ c.item }}</td>
+        <td><span class="tag {{ 'tag-已付清' if c.ok else 'tag-部分退回' }}">{{ '通过' if c.ok else '不符' }}</span></td>
+        <td class="num">{{ c.expected }}</td><td class="num">{{ c.actual }}</td></tr>
+    {% endfor %}
+    </tbody>
+  </table></div>
+  <div class="panel__bar">
+    <span class="hint">应付 = 已付 + 待付余额：{{ '成立' if view.pay_identity_ok else '不成立' }}。</span>
+  </div>
+</section>
+{% if view.blockers %}
+<section class="panel block-panel">
+  <div class="panel__head"><h2>阻断项</h2><span>{{ view.blockers|length }}</span></div>
+  <div class="scroll"><table class="ledger">
+    <thead><tr><th>原因码</th><th>说明</th></tr></thead>
+    <tbody>{% for b in view.blockers %}<tr><td class="num">{{ b.code }}</td><td>{{ b.detail }}</td></tr>{% endfor %}</tbody>
+  </table></div>
+</section>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{{ meta.title }}</title>
+<link rel="stylesheet" href="/static/theme.css">
+<link rel="stylesheet" href="/static/layout.css">
+<link rel="stylesheet" href="/static/components.css">
+<script src="/static/app.js" defer></script>
+</head>
+{% macro kpi_bar(metrics) %}
+{% if metrics %}
+<div class="kpis">
+  {% for name, value in metrics.items() %}
+  <div class="kpi"><small>{{ name }}</small><b>{{ value }}</b></div>
+  {% endfor %}
+</div>
+{% endif %}
+{% endmacro %}
+{% macro table(rows, labels) %}
+{% if rows %}
+<div class="scroll">
+<table class="ledger">
+  <thead><tr>
+    {% for col in rows[0].keys() %}<th>{{ labels.get(col, col) }}</th>{% endfor %}
+  </tr></thead>
+  <tbody>
+  {% for row in rows %}
+    <tr>{% for col in row.keys() %}
+      {% set val = row[col] %}
+      <td class="num" title="{{ val }}">
+        {% if col == 'status' or col == 'result' %}<span class="tag tag-{{ val }}">{{ val }}</span>
+        {% elif col == 'frozen' %}{{ '已冻结' if val else '可编辑' }}
+        {% elif val is mapping or (val is iterable and val is not string) %}{{ val|tojson }}
+        {% else %}{{ val }}{% endif %}
+      </td>{% endfor %}
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+</div>
+{% else %}<p class="empty">暂无记录。</p>{% endif %}
+{% endmacro %}
+<body>
+<div class="app">
+  <aside class="rail">
+    <a class="brand" href="/">出纳 · 付款批次</a>
+    <div class="eyebrow">PAYDESK / TREASURY</div>
+    <nav>
+      {% for k in meta['keys'] %}
+      <a class="nav-item {% if key==k %}active{% endif %}" href="/{{ k }}">
+        {{ '%02d'|format(loop.index) }}　{{ meta['modules'][loop.index0] }}
+      </a>
+      {% endfor %}
+    </nav>
+    <div class="rail-foot">
+      <span class="lamp"></span> 银行回报 T+1<br>
+      币种 CNY · 半分位四舍五入<br>
+      规则 {{ '2026.11.17-paydesk-r1' }}
+    </div>
+  </aside>
+  <div class="work">
+    <header class="topbar">
+      <strong>{{ meta['modules'][meta['keys'].index(key)] }}</strong>
+      <span class="mono">{{ meta.short }} · 单一资金工作台</span>
+      <button id="refresh" class="btn">刷新</button>
+    </header>
+    <main class="content">
+      {% block kpis %}{% endblock %}
+      <div id="feedback" role="status" aria-live="polite"></div>
+      {% block content %}{% endblock %}
+    </main>
+    <footer class="statusbar">
+      <span>资金出纳 / 批次冻结不可改写</span>
+      <span>UTC+08:00 · 回报号幂等 · 归档留旧版</span>
+      <a href="/docs">API</a>
+    </footer>
+  </div>
+</div>
+</body>
+</html>
